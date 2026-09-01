@@ -1,0 +1,14 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community App: Stirling PDF
+# Runs the NGINX daemon
+# ==============================================================================
+
+# Wait for Stirling PDF to become available. A Spring Boot application of this
+# size takes a while to come up, and longer still on the first start of a new
+# version, when it writes its settings file and prepares its database.
+bashio::net.wait_for 48080 127.0.0.1 900
+
+bashio::log.info "Starting NGINX..."
+exec nginx

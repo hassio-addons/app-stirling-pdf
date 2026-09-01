@@ -1,0 +1,37 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community App: Stirling PDF
+# Prepares the data directory and picks up extra OCR languages
+# ==============================================================================
+declare tessdata
+
+# Everything Stirling PDF writes lives here: its settings file, the pipelines,
+# the custom files and the signing keys. STIRLING_BASE_PATH points the whole
+# tree at it; left alone, the application writes beside its own jar.
+mkdir -p \
+    /data/stirling-pdf/configs \
+    /data/stirling-pdf/customFiles \
+    /data/stirling-pdf/logs \
+    /data/stirling-pdf/pipeline
+
+# The temporary directory is where a PDF is taken apart and put back together,
+# so it is deliberately not on /data. Nothing in it survives a restart.
+mkdir -p /tmp/stirling-pdf
+
+# Tesseract ships with English only in this app; every other language is a
+# separate file. Anything dropped into the app's configuration folder is
+# offered to Tesseract alongside the languages that came with it.
+#
+# The files are linked rather than copied, so replacing one takes effect on the
+# next start without leaving the old copy behind.
+tessdata=$(dirname "$(find /usr/share/tesseract-ocr -name 'eng.traineddata' | head -1)")
+readonly tessdata
+
+if bashio::fs.directory_exists '/config/tessdata'; then
+    for language in /config/tessdata/*.traineddata; do
+        bashio::fs.file_exists "${language}" || continue
+        bashio::log.info "Adding OCR language: $(basename "${language}" .traineddata)"
+        ln -s -f "${language}" "${tessdata}/"
+    done
+fi

@@ -1,0 +1,78 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community App: Stirling PDF
+# Runs the Stirling PDF server
+# ==============================================================================
+declare log_level
+
+# Only ever listen on loopback; NGINX is what faces Ingress and the network.
+export SERVER_ADDRESS="127.0.0.1"
+export SERVER_PORT="48080"
+
+# Everything Stirling PDF writes, the settings file included, lives under here.
+export STIRLING_BASE_PATH="/data/stirling-pdf/"
+
+# Taking a PDF apart needs room, and none of it is worth keeping, so it stays
+# off /data and out of the backup.
+export STIRLING_TEMPFILES_DIRECTORY="/tmp/stirling-pdf"
+export TMPDIR="/tmp/stirling-pdf"
+
+# LibreOffice is driven through unoserver rather than by hand, and Stirling PDF
+# starts and pools those processes itself. These are the paths it looks for the
+# helpers on; the ones that are absent are the tools it will refuse.
+export SYSTEM_CUSTOMPATHS_OPERATIONS_UNOCONVERT="/opt/venv/bin/unoconvert"
+export SYSTEM_CUSTOMPATHS_OPERATIONS_WEASYPRINT="/opt/venv/bin/weasyprint"
+export SYSTEM_CUSTOMPATHS_OPERATIONS_OCRMYPDF="/usr/bin/ocrmypdf"
+export SYSTEM_CUSTOMPATHS_OPERATIONS_SOFFICE="/usr/bin/soffice"
+
+# Calibre answers for exactly one endpoint, PDF to EPUB, and is not installed.
+# Stirling PDF probes for it at startup and would disable the group by itself;
+# naming it here states the intent rather than leaving it to a probe whose
+# result depends on where upstream decides to look next.
+export ENDPOINTS_GROUPSTOREMOVE="Calibre"
+
+# This app has no login of its own. The open source build of Stirling PDF is
+# compiled without the security module entirely, so there is nothing to enable.
+# Ingress is guarded by Home Assistant; the direct port is not guarded at all.
+export SECURITY_ENABLELOGIN="false"
+
+# Updates arrive by updating this app, so the banner offering to fetch one
+# leads somewhere the user cannot act on.
+export SYSTEM_SHOWUPDATE="false"
+
+# Nothing here calls home.
+export SYSTEM_ENABLEANALYTICS="false"
+export SYSTEM_ENABLEPOSTHOG="false"
+export SYSTEM_ENABLESCARF="false"
+export SYSTEM_GOOGLEVISIBILITY="false"
+
+# Stirling PDF has fewer levels of its own, and wants Spring's names for them.
+log_level="INFO"
+case "$(bashio::string.lower "$(bashio::config 'log_level' 'info')")" in
+    trace)              log_level="TRACE" ;;
+    debug)              log_level="DEBUG" ;;
+    info|notice)        log_level="INFO" ;;
+    warning)            log_level="WARN" ;;
+    error|fatal)        log_level="ERROR" ;;
+esac
+export LOGGING_LEVEL_STIRLING_SOFTWARE="${log_level}"
+
+# Used for the QR codes that hand a job to a phone, and for the links the share
+# buttons copy. Stirling PDF has no way to work this out from inside Ingress,
+# where the address in the browser belongs to Home Assistant and expires.
+if bashio::config.has_value 'base_url'; then
+    SYSTEM_FRONTENDURL=$(bashio::config 'base_url')
+    export SYSTEM_FRONTENDURL
+fi
+
+# A single PDF is held in memory while it is worked on, so on a small machine
+# the ceiling is worth setting before the JVM finds it the hard way.
+if bashio::config.has_value 'max_file_size'; then
+    SYSTEM_FILEUPLOADLIMIT="$(bashio::config 'max_file_size')MB"
+    export SYSTEM_FILEUPLOADLIMIT
+fi
+
+bashio::log.info "Starting Stirling PDF..."
+
+exec java -jar /opt/stirling-pdf/stirling-pdf.jar
