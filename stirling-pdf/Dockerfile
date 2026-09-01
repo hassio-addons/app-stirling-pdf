@@ -32,6 +32,15 @@ ENV \
 # has to see the "uno" module that python3-uno installs system-wide, which is
 # what --system-site-packages is for.
 #
+# Two of the pins end in "*" rather than a rebuild number. Debian rebuilds a
+# package per architecture without touching its source, and the counter it
+# bumps is not in step across them: pngquant is +b1 on amd64 and +b2 on
+# aarch64, unpaper +b2 and +b3. One literal version cannot satisfy both, so
+# these pin the Debian revision and let the rebuild number float. Renovate's
+# deb manager reads amd64 only and would pin an aarch64 build to a version
+# that does not exist there, which is exactly the breakage; its pattern does
+# not match a "*", so it leaves these two alone.
+#
 # NGINX faces Ingress and the network; Stirling PDF itself only listens on
 # loopback.
 ARG STIRLING_PDF_VERSION="2.14.3"
@@ -58,7 +67,7 @@ RUN \
         nginx=1.26.3-3+deb13u7 \
         ocrmypdf=16.7.0+dfsg1-3 \
         openjdk-25-jre-headless=25.0.4.1+1-1~deb13u1 \
-        pngquant=2.18.0-1+b1 \
+        pngquant=2.18.0-1* \
         poppler-utils=25.03.0-5+deb13u4 \
         python3-uno=4:25.2.3-2+deb13u6 \
         python3-venv=3.13.5-1 \
@@ -66,7 +75,7 @@ RUN \
         tesseract-ocr-eng=1:4.1.0-2 \
         tesseract-ocr-osd=1:4.1.0-2 \
         tesseract-ocr=5.5.0-1+b1 \
-        unpaper=7.0.0-3+b2 \
+        unpaper=7.0.0-3* \
     \
     && python3 -m venv --system-site-packages /opt/venv \
     && /opt/venv/bin/pip install --no-cache-dir --prefer-binary \
