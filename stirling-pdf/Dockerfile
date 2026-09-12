@@ -58,7 +58,7 @@ RUN \
         fonts-noto-core=20201225-2 \
         fontforge-nox=1:20230101~dfsg-4+b1 \
         ghostscript=10.05.1~dfsg-1+deb13u1 \
-        imagemagick=8:7.1.1.43+dfsg1-1+deb13u11 \
+        imagemagick=8:7.1.1.43+dfsg1-1+deb13u12 \
         libreoffice-calc-nogui=4:25.2.3-2+deb13u6 \
         libreoffice-draw-nogui=4:25.2.3-2+deb13u6 \
         libreoffice-impress-nogui=4:25.2.3-2+deb13u6 \
