@@ -43,7 +43,7 @@ ENV \
 #
 # NGINX faces Ingress and the network; Stirling PDF itself only listens on
 # loopback.
-ARG STIRLING_PDF_VERSION="2.14.3"
+ARG STIRLING_PDF_VERSION="3.0.1"
 ARG UNOSERVER_VERSION="3.7"
 ARG WEASYPRINT_VERSION="70.0"
 # hadolint ignore=DL3008,DL3013
@@ -57,19 +57,19 @@ RUN \
         fonts-liberation2=1:2.1.5-3 \
         fonts-noto-core=20201225-2 \
         fontforge-nox=1:20230101~dfsg-4+b1 \
-        ghostscript=10.05.1~dfsg-1+deb13u1 \
+        ghostscript=10.05.1~dfsg-1+deb13u2 \
         imagemagick=8:7.1.1.43+dfsg1-1+deb13u12 \
-        libreoffice-calc-nogui=4:25.2.3-2+deb13u6 \
-        libreoffice-draw-nogui=4:25.2.3-2+deb13u6 \
-        libreoffice-impress-nogui=4:25.2.3-2+deb13u6 \
-        libreoffice-java-common=4:25.2.3-2+deb13u6 \
-        libreoffice-writer-nogui=4:25.2.3-2+deb13u6 \
-        nginx=1.26.3-3+deb13u8 \
+        libreoffice-calc-nogui=4:25.2.3-2+deb13u7 \
+        libreoffice-draw-nogui=4:25.2.3-2+deb13u7 \
+        libreoffice-impress-nogui=4:25.2.3-2+deb13u7 \
+        libreoffice-java-common=4:25.2.3-2+deb13u7 \
+        libreoffice-writer-nogui=4:25.2.3-2+deb13u7 \
+        nginx=1.26.3-3+deb13u9 \
         ocrmypdf=16.7.0+dfsg1-3 \
         openjdk-25-jre-headless=25.0.4.1+1-1~deb13u1 \
         pngquant=2.18.0-1* \
         poppler-utils=25.03.0-5+deb13u4 \
-        python3-uno=4:25.2.3-2+deb13u6 \
+        python3-uno=4:25.2.3-2+deb13u7 \
         python3-venv=3.13.5-1 \
         qpdf=12.2.0-1 \
         tesseract-ocr-eng=1:4.1.0-2 \
