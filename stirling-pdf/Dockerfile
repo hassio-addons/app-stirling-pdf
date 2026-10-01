@@ -43,7 +43,7 @@ ENV \
 #
 # NGINX faces Ingress and the network; Stirling PDF itself only listens on
 # loopback.
-ARG STIRLING_PDF_VERSION="3.0.1"
+ARG STIRLING_PDF_VERSION="3.0.2"
 ARG UNOSERVER_VERSION="3.7"
 ARG WEASYPRINT_VERSION="70.0"
 # hadolint ignore=DL3008,DL3013
