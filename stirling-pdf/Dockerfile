@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:9.5.0
+ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base:9.5.1
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -57,19 +57,19 @@ RUN \
         fonts-liberation2=1:2.1.5-3 \
         fonts-noto-core=20201225-2 \
         fontforge-nox=1:20230101~dfsg-4+b1 \
-        ghostscript=10.05.1~dfsg-1+deb13u2 \
+        ghostscript=10.05.1~dfsg-1+deb13u3 \
         imagemagick=8:7.1.1.43+dfsg1-1+deb13u12 \
-        libreoffice-calc-nogui=4:25.2.3-2+deb13u7 \
-        libreoffice-draw-nogui=4:25.2.3-2+deb13u7 \
-        libreoffice-impress-nogui=4:25.2.3-2+deb13u7 \
-        libreoffice-java-common=4:25.2.3-2+deb13u7 \
-        libreoffice-writer-nogui=4:25.2.3-2+deb13u7 \
-        nginx=1.26.3-3+deb13u9 \
+        libreoffice-calc-nogui=4:25.2.3-2+deb13u8 \
+        libreoffice-draw-nogui=4:25.2.3-2+deb13u8 \
+        libreoffice-impress-nogui=4:25.2.3-2+deb13u8 \
+        libreoffice-java-common=4:25.2.3-2+deb13u8 \
+        libreoffice-writer-nogui=4:25.2.3-2+deb13u8 \
+        nginx=1.26.3-3+deb13u10 \
         ocrmypdf=16.7.0+dfsg1-3 \
         openjdk-25-jre-headless=25.0.4.1+1-1~deb13u1 \
         pngquant=2.18.0-1* \
         poppler-utils=25.03.0-5+deb13u4 \
-        python3-uno=4:25.2.3-2+deb13u7 \
+        python3-uno=4:25.2.3-2+deb13u8 \
         python3-venv=3.13.5-1 \
         qpdf=12.2.0-1 \
         tesseract-ocr-eng=1:4.1.0-2 \
