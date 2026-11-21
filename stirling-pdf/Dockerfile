@@ -66,7 +66,7 @@ RUN \
         libreoffice-writer-nogui=4:25.2.3-2+deb13u8 \
         nginx=1.26.3-3+deb13u10 \
         ocrmypdf=16.7.0+dfsg1-3 \
-        openjdk-25-jre-headless=25.0.4.1+1-1~deb13u1 \
+        openjdk-25-jre-headless=25.0.5+8-1~deb13u1 \
         pngquant=2.18.0-1* \
         poppler-utils=25.03.0-5+deb13u4 \
         python3-uno=4:25.2.3-2+deb13u8 \
